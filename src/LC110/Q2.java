@@ -2,71 +2,110 @@ package LC110;
 
 import java.util.*;
 
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode() {
-    }
-
-    ListNode(int val) {
-        this.val = val;
-    }
-
-    ListNode(int val, ListNode next) {
-        this.val = val;
-        this.next = next;
-    }
-}
-
 public class Q2 {
 
     public static void main(String args[]) {
+        List<Integer> nums = new ArrayList<>(Arrays.asList(2,1,3,3,2));
+        System.out.print(util1(nums));
 
     }
 
-    public static ListNode helper(ListNode head) {
-        dp = new HashMap<>();
-        return util1(head);
-    }
 
-    static HashMap<String, Integer> dp = new HashMap<>();
+    
 
-    public static int find2(int max, int min) {
-        String key = max + "_" + min;
-        String key2 = min + "_" + max;
-        if (dp.containsKey(key)) {
-            return dp.get(key);
-        } else if (dp.containsKey(key2)) {
-            return dp.get(key2);
+
+
+    
+    //failed
+    public static int util1(List<Integer> nums) {
+        // get the frequency of the elements
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int i : nums) {
+            hm.put(i, hm.getOrDefault(i, 0) + 1);
         }
-        if (min == 0) {
-            return max;
-        }
-        int ans = find2(min, max % min);
-        dp.put(key2, ans);
-        dp.put(key, ans);
+        int ans = 0;
+        // while (hm.size() > 1) {
+        //     traverse(nums, hm);
+        //     ans++;
+        // }
+        traverse(nums, hm);
+        for(int i:nums){
+            System.out.print(i+" ");
+        }System.out.println();
         return ans;
     }
 
-    public static ListNode util1(ListNode head) {
-        if (head == null) {
-            return head;
-        } else if (head.next == null) {
-            return head;
+    public static void traverse(List<Integer> nums, HashMap<Integer, Integer> hm) {
+        int n = nums.size();
+        for (int i = 0; i < nums.size(); i++) {
+            int prevIndex = (i - 1 + n) % n;
+            int nextIndex = (i + 1) % n;
+            int prevFreq = hm.get(nums.get(prevIndex));
+            int nextFreq = hm.get(nums.get(nextIndex));
+            int currentFreq = hm.get(nums.get(i));
+            if (currentFreq <= prevFreq || currentFreq <= nextFreq) {
+                if (hm.get(nums.get(i)) == 1) {
+                    hm.remove(nums.get(i));
+                } else {
+                    hm.put(nums.get(i), hm.get(nums.get(i)) - 1);
+                }
+                if (prevFreq >= nextFreq) {
+                    nums.set(i, nums.get(prevIndex));
+                    hm.put(nums.get(prevIndex), hm.get(nums.get(prevIndex)) + 1);
+                } else {
+                    nums.set(i, nums.get(nextIndex));
+                    hm.put(nums.get(nextIndex), hm.get(nums.get(nextIndex)) + 1);
+                }
+            }
         }
-
-        ListNode updated = util1(head.next);
-        int gcd;
-        if (head.val > head.next.val) {
-            gcd = find2(head.val, head.next.val);
-        } else {
-            gcd = find2(head.val, head.next.val);
-        }
-        ListNode newNode = new ListNode(gcd);
-        head.next = newNode;
-        newNode.next = updated;
-        return head;
     }
+
+    // public static void main(String args[]) {
+
+    // }
+
+    // public static ListNode helper(ListNode head) {
+    // dp = new HashMap<>();
+    // return util1(head);
+    // }
+
+    // static HashMap<String, Integer> dp = new HashMap<>();
+
+    // public static int find2(int max, int min) {
+    // String key = max + "_" + min;
+    // String key2 = min + "_" + max;
+    // if (dp.containsKey(key)) {
+    // return dp.get(key);
+    // } else if (dp.containsKey(key2)) {
+    // return dp.get(key2);
+    // }
+    // if (min == 0) {
+    // return max;
+    // }
+    // int ans = find2(min, max % min);
+    // dp.put(key2, ans);
+    // dp.put(key, ans);
+    // return ans;
+    // }
+
+    // public static ListNode util1(ListNode head) {
+    // if (head == null) {
+    // return head;
+    // } else if (head.next == null) {
+    // return head;
+    // }
+
+    // ListNode updated = util1(head.next);
+    // int gcd;
+    // if (head.val > head.next.val) {
+    // gcd = find2(head.val, head.next.val);
+    // } else {
+    // gcd = find2(head.val, head.next.val);
+    // }
+    // ListNode newNode = new ListNode(gcd);
+    // head.next = newNode;
+    // newNode.next = updated;
+    // return head;
+    // }
 
 }
