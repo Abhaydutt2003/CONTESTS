@@ -9,6 +9,11 @@ public class Q4 {
         System.out.print(7 % 5);
     }
 
+
+
+
+    
+
     public static int util1(List<Integer> nums) {
         int candidate = 0, count = 0;
         int arr[] = new int[nums.size()];
