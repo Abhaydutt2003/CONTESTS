@@ -10,8 +10,7 @@ public class Q4 {
     }
 
 
-
-
+    
     
 
     public static int util1(List<Integer> nums) {
